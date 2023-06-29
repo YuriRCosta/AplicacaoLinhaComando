@@ -11,6 +11,10 @@ import (
 	"github.com/gorilla/mux"
 )
 
+const ERRO_AO_CONVERTER_O_PARAMETRO_PARA_INTEIRO = "Erro ao converter o parâmetro para inteiro!"
+const ERRO_AO_CRIAR_STATEMENT = "Erro ao criar o statement!"
+const ERRO_AO_CONECTAR_COM_O_BANCO_DE_DADOS = "Erro ao conectar com o banco de dados!"
+
 type usuario struct {
 	ID    int    `json:"id"`
 	Nome  string `json:"nome"`
@@ -34,14 +38,14 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	db, err := banco.Conectar()
 	if err != nil {
-		w.Write([]byte("Erro ao conectar com o banco de dados!"))
+		w.Write([]byte(ERRO_AO_CONECTAR_COM_O_BANCO_DE_DADOS))
 		return
 	}
 	defer db.Close()
 
 	statement, err := db.Prepare("insert into usuarios (nome, email) values (?, ?)")
 	if err != nil {
-		w.Write([]byte("Erro ao criar o statement!"))
+		w.Write([]byte(ERRO_AO_CRIAR_STATEMENT))
 		return
 	}
 	defer statement.Close()
@@ -68,7 +72,7 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 func BuscarUsuarios(w http.ResponseWriter, r *http.Request) {
 	db, err := banco.Conectar()
 	if err != nil {
-		w.Write([]byte("Erro ao conectar com o banco de dados!"))
+		w.Write([]byte(ERRO_AO_CONECTAR_COM_O_BANCO_DE_DADOS))
 		return
 	}
 	defer db.Close()
@@ -106,13 +110,13 @@ func BuscarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	ID, err := strconv.ParseUint(params["id"], 10, 32)
 	if err != nil {
-		w.Write([]byte("Erro ao converter o parâmetro para inteiro!"))
+		w.Write([]byte(ERRO_AO_CONVERTER_O_PARAMETRO_PARA_INTEIRO))
 		return
 	}
 
 	db, err := banco.Conectar()
 	if err != nil {
-		w.Write([]byte("Erro ao conectar com o banco de dados!"))
+		w.Write([]byte(ERRO_AO_CONECTAR_COM_O_BANCO_DE_DADOS))
 		return
 	}
 	defer db.Close()
@@ -145,7 +149,7 @@ func AtualizarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	ID, err := strconv.ParseUint(params["id"], 10, 32)
 	if err != nil {
-		w.Write([]byte("Erro ao converter o parâmetro para inteiro!"))
+		w.Write([]byte(ERRO_AO_CONVERTER_O_PARAMETRO_PARA_INTEIRO))
 		return
 	}
 
@@ -164,14 +168,14 @@ func AtualizarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	db, err := banco.Conectar()
 	if err != nil {
-		w.Write([]byte("Erro ao conectar com o banco de dados!"))
+		w.Write([]byte(ERRO_AO_CONECTAR_COM_O_BANCO_DE_DADOS))
 		return
 	}
 	defer db.Close()
 
 	statement, err := db.Prepare("update usuarios set nome = ?, email = ? where id = ?")
 	if err != nil {
-		w.Write([]byte("Erro ao criar o statement!"))
+		w.Write([]byte(ERRO_AO_CRIAR_STATEMENT))
 		return
 	}
 	defer statement.Close()
@@ -190,20 +194,20 @@ func DeletarUsuario(w http.ResponseWriter, r *http.Request) {
 
 	ID, err := strconv.ParseUint(params["id"], 10, 32)
 	if err != nil {
-		w.Write([]byte("Erro ao converter o parâmetro para inteiro!"))
+		w.Write([]byte(ERRO_AO_CONVERTER_O_PARAMETRO_PARA_INTEIRO))
 		return
 	}
 
 	db, err := banco.Conectar()
 	if err != nil {
-		w.Write([]byte("Erro ao conectar com o banco de dados!"))
+		w.Write([]byte(ERRO_AO_CONECTAR_COM_O_BANCO_DE_DADOS))
 		return
 	}
 	defer db.Close()
 
 	statement, err := db.Prepare("delete from usuarios where id = ?")
 	if err != nil {
-		w.Write([]byte("Erro ao criar o statement!"))
+		w.Write([]byte(ERRO_AO_CRIAR_STATEMENT))
 		return
 	}
 	defer statement.Close()
